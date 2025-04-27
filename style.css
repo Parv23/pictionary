@@ -282,6 +282,11 @@ select {
     background-color: #ddd;
 }
 
+#player-name {
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
 #word-display {
     font-weight: bold;
     color: var(--primary-color);
