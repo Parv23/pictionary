@@ -23,20 +23,28 @@
             <div class="canvas-container">
                 <canvas id="drawing-canvas"></canvas>
                 <div class="drawing-tools">
-                    <div class="color-picker">
-                        <button class="color-btn active" data-color="#000000" style="background-color: #000000;"></button>
-                        <button class="color-btn" data-color="#ff0000" style="background-color: #ff0000;"></button>
-                        <button class="color-btn" data-color="#0000ff" style="background-color: #0000ff;"></button>
-                        <button class="color-btn" data-color="#00aa00" style="background-color: #00aa00;"></button>
-                        <button class="color-btn" data-color="#ffff00" style="background-color: #ffff00;"></button>
+                    <div class="tool-section">
+                        <div class="color-picker">
+                            <button class="color-btn active" data-color="#000000" style="background-color: #000000;"></button>
+                            <button class="color-btn" data-color="#ff0000" style="background-color: #ff0000;"></button>
+                            <button class="color-btn" data-color="#0000ff" style="background-color: #0000ff;"></button>
+                            <button class="color-btn" data-color="#00aa00" style="background-color: #00aa00;"></button>
+                            <button class="color-btn" data-color="#ffff00" style="background-color: #ffff00;"></button>
+                        </div>
+                        <div class="eraser-tools">
+                            <button id="manual-eraser" class="tool-btn">Eraser</button>
+                            <button id="stroke-eraser" class="tool-btn">Stroke Eraser</button>
+                        </div>
                     </div>
-                    <div class="brush-size">
-                        <button class="size-btn" data-size="2">S</button>
-                        <button class="size-btn active" data-size="5">M</button>
-                        <button class="size-btn" data-size="10">L</button>
+                    <div class="tool-section">
+                        <div class="brush-size">
+                            <button class="size-btn" data-size="2">S</button>
+                            <button class="size-btn active" data-size="5">M</button>
+                            <button class="size-btn" data-size="10">L</button>
+                        </div>
+                        <button id="clear-btn">Clear All</button>
+                        <button id="back-btn">Back to Home</button>
                     </div>
-                    <button id="clear-btn">Clear</button>
-                    <button id="back-btn">Back to Home</button>
                 </div>
             </div>
         </main>

@@ -225,6 +225,13 @@ select {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.tool-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
 .color-picker {
     display: flex;
     gap: 0.5rem;
@@ -241,6 +248,32 @@ select {
 .color-btn.active {
     border: 2px solid var(--primary-color);
     transform: scale(1.1);
+}
+
+.eraser-tools {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.tool-btn {
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.tool-btn:hover {
+    background-color: #eee;
+}
+
+.tool-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
 }
 
 .brush-size {

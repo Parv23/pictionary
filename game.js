@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastY = 0;
     let currentColor = '#000000';
     let brushSize = 5;
+    let drawingMode = 'brush'; // 'brush', 'eraser', 'stroke-eraser'
+    
+    // Store drawn strokes for stroke eraser
+    let strokes = [];
+    let currentStroke = null;
     
     // Drawing event listeners
     canvas.addEventListener('mousedown', startDrawing);
@@ -56,12 +61,37 @@ document.addEventListener('DOMContentLoaded', () => {
     function startDrawing(e) {
         isDrawing = true;
         [lastX, lastY] = [e.offsetX, e.offsetY];
+        
+        if (drawingMode === 'stroke-eraser') {
+            // In stroke eraser mode, check if a stroke was clicked
+            checkStrokeErase(e.offsetX, e.offsetY);
+        } else {
+            // Start a new stroke for drawing or manual erasing
+            currentStroke = {
+                mode: drawingMode,
+                color: currentColor,
+                size: brushSize,
+                points: [{x: lastX, y: lastY}]
+            };
+        }
     }
     
     function draw(e) {
         if (!isDrawing) return;
         
-        ctx.strokeStyle = currentColor;
+        if (drawingMode === 'stroke-eraser') {
+            // When in stroke eraser mode, we don't draw anything on mousemove
+            return;
+        }
+        
+        if (drawingMode === 'eraser') {
+            // For eraser, use white color
+            ctx.strokeStyle = '#ffffff';
+        } else {
+            // For brush, use selected color
+            ctx.strokeStyle = currentColor;
+        }
+        
         ctx.lineWidth = brushSize;
         
         ctx.beginPath();
@@ -69,17 +99,84 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineTo(e.offsetX, e.offsetY);
         ctx.stroke();
         
+        // Add point to current stroke
+        if (currentStroke) {
+            currentStroke.points.push({x: e.offsetX, y: e.offsetY});
+        }
+        
         [lastX, lastY] = [e.offsetX, e.offsetY];
     }
     
     function stopDrawing() {
+        if (!isDrawing) return;
         isDrawing = false;
+        
+        // Add the completed stroke to the strokes array
+        if (currentStroke && drawingMode !== 'stroke-eraser') {
+            strokes.push(currentStroke);
+            currentStroke = null;
+        }
+    }
+    
+    function checkStrokeErase(x, y) {
+        // Find and remove strokes that are close to the click point
+        // This is a simple implementation - a more sophisticated one would check
+        // if the point is actually on the stroke path
+        const tolerance = 10; // Distance in pixels to consider a hit
+        let erasedStroke = false;
+        
+        for (let i = strokes.length - 1; i >= 0; i--) {
+            const stroke = strokes[i];
+            for (const point of stroke.points) {
+                const distance = Math.sqrt(
+                    Math.pow(point.x - x, 2) + Math.pow(point.y - y, 2)
+                );
+                
+                if (distance <= tolerance) {
+                    // Stroke is close enough to the click, remove it
+                    strokes.splice(i, 1);
+                    erasedStroke = true;
+                    break;
+                }
+            }
+            
+            if (erasedStroke) {
+                // Redraw the canvas without the erased stroke
+                redrawCanvas();
+                break;
+            }
+        }
+    }
+    
+    function redrawCanvas() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Redraw all strokes
+        for (const stroke of strokes) {
+            if (stroke.mode === 'brush' && stroke.points.length > 1) {
+                ctx.strokeStyle = stroke.color;
+                ctx.lineWidth = stroke.size;
+                
+                ctx.beginPath();
+                ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+                
+                for (let i = 1; i < stroke.points.length; i++) {
+                    ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+                }
+                
+                ctx.stroke();
+            }
+        }
     }
     
     // Color picker
     const colorBtns = document.querySelectorAll('.color-btn');
     colorBtns.forEach(btn => {
         btn.addEventListener('click', () => {
+            // Set drawing mode back to brush when color is selected
+            setDrawingMode('brush');
+            
             // Remove active class from all buttons
             colorBtns.forEach(b => b.classList.remove('active'));
             // Add active class to clicked button
@@ -102,10 +199,45 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
+    // Eraser tools
+    const manualEraser = document.getElementById('manual-eraser');
+    const strokeEraser = document.getElementById('stroke-eraser');
+    const toolBtns = document.querySelectorAll('.tool-btn');
+    
+    manualEraser.addEventListener('click', () => {
+        setDrawingMode('eraser');
+    });
+    
+    strokeEraser.addEventListener('click', () => {
+        setDrawingMode('stroke-eraser');
+    });
+    
+    function setDrawingMode(mode) {
+        drawingMode = mode;
+        
+        // Update UI - remove active class from all tool buttons
+        toolBtns.forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to the appropriate button
+        if (mode === 'eraser') {
+            manualEraser.classList.add('active');
+        } else if (mode === 'stroke-eraser') {
+            strokeEraser.classList.add('active');
+        }
+        
+        // Also update cursor style
+        if (mode === 'eraser' || mode === 'stroke-eraser') {
+            canvas.style.cursor = 'crosshair';
+        } else {
+            canvas.style.cursor = 'default';
+        }
+    }
+    
     // Clear button
     const clearBtn = document.getElementById('clear-btn');
     clearBtn.addEventListener('click', () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        strokes = []; // Clear the strokes array too
     });
     
     // Back button
