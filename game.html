@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictionary - Draw!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container game-container">
+        <header>
+            <h1>Pictionary</h1>
+            <div id="player-info">
+                <span id="player-name"></span>
+                <span class="separator">|</span>
+                <span>Word: <strong id="word-display"></strong></span>
+                <span class="separator">|</span>
+                <button id="new-word-btn">New Word</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="canvas-container">
+                <canvas id="drawing-canvas"></canvas>
+                <div class="drawing-tools">
+                    <div class="color-picker">
+                        <button class="color-btn active" data-color="#000000" style="background-color: #000000;"></button>
+                        <button class="color-btn" data-color="#ff0000" style="background-color: #ff0000;"></button>
+                        <button class="color-btn" data-color="#0000ff" style="background-color: #0000ff;"></button>
+                        <button class="color-btn" data-color="#00aa00" style="background-color: #00aa00;"></button>
+                        <button class="color-btn" data-color="#ffff00" style="background-color: #ffff00;"></button>
+                    </div>
+                    <div class="brush-size">
+                        <button class="size-btn" data-size="2">S</button>
+                        <button class="size-btn active" data-size="5">M</button>
+                        <button class="size-btn" data-size="10">L</button>
+                    </div>
+                    <button id="clear-btn">Clear</button>
+                    <button id="back-btn">Back to Home</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="words.js"></script>
+    <script src="game.js"></script>
+</body>
+</html> 

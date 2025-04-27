@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictionary Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pictionary</h1>
+            <p class="tagline">Draw, Guess, Win!</p>
+        </header>
+
+        <main>
+            <div class="welcome-card">
+                <h2>Welcome to Pictionary!</h2>
+                <p>Challenge your drawing skills and have fun with friends.</p>
+                
+                <form id="username-form">
+                    <div class="input-group">
+                        <label for="username">Enter your name:</label>
+                        <input type="text" id="username" required placeholder="Your name">
+                    </div>
+                    <button type="submit" class="start-button">Let's Draw!</button>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <p>A fun drawing game project</p>
+            <div class="language-selector">
+                <span>Language: </span>
+                <select id="language">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                </select>
+            </div>
+        </footer>
+    </div>
+
+    <script src="words.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 
