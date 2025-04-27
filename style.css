@@ -230,6 +230,11 @@ select {
     flex-direction: column;
     gap: 1rem;
     align-items: center;
+    padding: 0.5rem;
+    border: 1px solid #eee;
+    border-radius: 0.5rem;
+    background-color: #f9f9f9;
+    min-width: 200px;
 }
 
 .color-picker {
@@ -254,6 +259,15 @@ select {
     display: flex;
     gap: 0.5rem;
     margin-top: 0.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
 }
 
 .tool-btn {
