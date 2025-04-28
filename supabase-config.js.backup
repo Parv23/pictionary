@@ -4,49 +4,25 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 // Initialize Supabase client
 let supabase;
-
-// Function to initialize Supabase
-function initializeSupabase() {
-  // Check if window.supabase exists
-  if (typeof window.supabase === 'undefined') {
-    console.error('Supabase SDK not loaded. Make sure the CDN script is included before this file.');
-    return false;
-  }
-  
-  try {
-    supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-    console.log('Supabase client initialized successfully');
-    return true;
-  } catch (error) {
-    console.error('Failed to initialize Supabase client:', error);
-    return false;
-  }
+try {
+  supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  console.log('Supabase client initialized successfully');
+} catch (error) {
+  console.error('Failed to initialize Supabase client:', error);
 }
 
-// Initialize immediately
-const supabaseInitialized = initializeSupabase();
-
 // Export database for use in other files
+// No change to how other files access this - they'll still use roomsCollection
 const roomsCollection = {
   doc: (roomCode) => {
     return {
       set: async (data) => {
         try {
-          // Ensure Supabase is initialized
-          if (!supabase && !initializeSupabase()) {
-            throw new Error('Supabase client is not initialized');
-          }
-          
-          console.log(`Creating room ${roomCode} with data:`, data);
           const { data: response, error } = await supabase
             .from('rooms')
             .insert([{ ...data, id: roomCode }]);
           
-          if (error) {
-            console.error('Supabase error creating room:', error);
-            throw error;
-          }
-          console.log('Room created successfully:', roomCode);
+          if (error) throw error;
           return response;
         } catch (error) {
           console.error('Error creating room:', error);
@@ -55,21 +31,13 @@ const roomsCollection = {
       },
       update: async (data) => {
         try {
-          // Ensure Supabase is initialized
-          if (!supabase && !initializeSupabase()) {
-            throw new Error('Supabase client is not initialized');
-          }
-          
           console.log(`Updating room ${roomCode} with data:`, data);
           const { data: response, error } = await supabase
             .from('rooms')
             .update(data)
             .eq('id', roomCode);
           
-          if (error) {
-            console.error('Supabase error updating room:', error);
-            throw error;
-          }
+          if (error) throw error;
           console.log('Update successful:', response);
           return response;
         } catch (error) {
@@ -79,11 +47,6 @@ const roomsCollection = {
       },
       get: async () => {
         try {
-          // Ensure Supabase is initialized
-          if (!supabase && !initializeSupabase()) {
-            throw new Error('Supabase client is not initialized');
-          }
-          
           console.log(`Getting room data for ${roomCode}`);
           const { data: response, error } = await supabase
             .from('rooms')
@@ -111,13 +74,6 @@ const roomsCollection = {
       },
       onSnapshot: (callback, errorCallback) => {
         try {
-          // Ensure Supabase is initialized
-          if (!supabase && !initializeSupabase()) {
-            const initError = new Error('Supabase client is not initialized');
-            if (errorCallback) errorCallback(initError);
-            return () => {}; // No-op unsubscribe
-          }
-          
           console.log(`Setting up realtime subscription for room ${roomCode}`);
           
           // First get the initial data

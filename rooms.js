@@ -3,40 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const createRoomBtn = document.getElementById('create-room-btn');
     const roomCodeInput = document.getElementById('room-code');
     const joinBtn = document.getElementById('join-btn');
-    const languageSelect = document.getElementById('language');
-    const quickDrawBtn = document.getElementById('quick-draw-btn');
     const errorMessage = document.getElementById('error-message');
     
-    // Save selected language to local storage
-    languageSelect.addEventListener('change', (e) => {
-        localStorage.setItem('pictionary-language', e.target.value);
-    });
-    
-    // Load saved language if exists
-    const savedLanguage = localStorage.getItem('pictionary-language');
-    if (savedLanguage) {
-        languageSelect.value = savedLanguage;
+    // Pre-fill username if saved before
+    const savedUsername = localStorage.getItem('pictionary-username');
+    if (savedUsername) {
+        usernameInput.value = savedUsername;
     }
     
-    // Handle quick draw button click
-    quickDrawBtn.addEventListener('click', () => {
-        const username = usernameInput.value.trim();
-        
-        if (!username) {
-            showError('Please enter your name first');
-            usernameInput.focus();
-            return;
-        }
-        
-        // Clear any previous error
-        clearError();
-        
-        // Save username to local storage
-        localStorage.setItem('pictionary-username', username);
-        
-        // Redirect to game.html
-        window.location.href = 'game.html';
-    });
+    // Focus on input field when page loads
+    usernameInput.focus();
     
     // Handle create room button click
     createRoomBtn.addEventListener('click', async () => {
@@ -69,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save data to local storage
             saveSessionData(username, roomCode, true);
             
-            // Redirect to room.html
+            // Redirect to room page
             window.location.href = 'room.html';
         } catch (error) {
             console.error('Error creating room:', error);
@@ -77,16 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+    // Handle join button click
+    joinBtn.addEventListener('click', () => {
+        joinRoom();
+    });
+    
     // Handle room code input keypress
     roomCodeInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             joinRoom();
         }
-    });
-    
-    // Handle join button click
-    joinBtn.addEventListener('click', () => {
-        joinRoom();
     });
     
     // Function to join a room
@@ -133,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save data to local storage
             saveSessionData(username, roomCode, false);
             
-            // Redirect to room.html
+            // Redirect to room page
             window.location.href = 'room.html';
         } catch (error) {
             console.error('Error joining room:', error);
@@ -213,13 +189,4 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMessage.textContent = '';
         errorMessage.style.display = 'none';
     }
-    
-    // Pre-fill username if saved before
-    const savedUsername = localStorage.getItem('pictionary-username');
-    if (savedUsername) {
-        usernameInput.value = savedUsername;
-    }
-    
-    // Focus on input field when page loads
-    usernameInput.focus();
 }); 

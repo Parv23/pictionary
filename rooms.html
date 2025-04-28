@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictionary Rooms</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pictionary</h1>
+            <p class="tagline">Draw, Guess, Win!</p>
+        </header>
+
+        <main>
+            <div class="welcome-card">
+                <h2>Welcome to Pictionary Rooms!</h2>
+                <p>Create a room or join an existing one to play with friends.</p>
+                
+                <div class="username-section">
+                    <div class="input-group">
+                        <label for="username">Enter your name:</label>
+                        <input type="text" id="username" required placeholder="Your name">
+                    </div>
+                </div>
+
+                <div class="room-buttons">
+                    <button id="create-room-btn" class="room-btn">Create a room</button>
+                    <div class="code-input-container">
+                        <input type="text" id="room-code" placeholder="Enter code" class="join-input">
+                        <button id="join-btn" class="join-button">Join</button>
+                    </div>
+                </div>
+                
+                <div id="error-message" class="error-message"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>A fun drawing game project</p>
+        </footer>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="rooms.js"></script>
+</body>
+</html> 
