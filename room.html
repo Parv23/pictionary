@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictionary Room</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container game-container">
+        <header>
+            <h1>Pictionary</h1>
+            <div id="room-info">
+                <span>Room Code: <strong id="room-code-display"></strong></span>
+                <span class="separator">|</span>
+                <span>Player: <strong id="player-name"></strong></span>
+                <span class="separator">|</span>
+                <span id="host-indicator"></span>
+            </div>
+        </header>
+
+        <main>
+            <div class="room-container">
+                <div class="player-roster">
+                    <h2>Players</h2>
+                    <ul id="players-list">
+                        <!-- Players will be added dynamically -->
+                    </ul>
+                </div>
+                
+                <div class="game-area">
+                    <div class="waiting-message">
+                        <h2>Waiting for host to start the game...</h2>
+                    </div>
+                    
+                    <div id="host-controls" class="host-controls" style="display: none;">
+                        <button id="start-game-btn" class="start-btn">Start Game</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <button id="leave-room-btn" class="leave-btn">Leave Room</button>
+        </footer>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="room.js"></script>
+</body>
+</html> 
