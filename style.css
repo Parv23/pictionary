@@ -75,9 +75,6 @@ main {
 
 .input-group {
     margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
 }
 
 .input-group label {
@@ -513,7 +510,7 @@ select {
 }
 
 .quick-draw-btn {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -521,13 +518,13 @@ select {
     border-radius: 0.5rem;
     cursor: pointer;
     margin-top: 0.5rem;
+    margin-left: 0.5rem;
     transition: background-color 0.3s, transform 0.2s;
-    width: 100%;
-    display: block;
+    display: inline-block;
 }
 
 .quick-draw-btn:hover {
-    background-color: #2d8f48;
+    background-color: #3367d6;
     transform: translateY(-2px);
 }
 
