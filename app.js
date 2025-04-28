@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const roomCodeInput = document.getElementById('room-code');
     const joinBtn = document.getElementById('join-btn');
     const languageSelect = document.getElementById('language');
+    const quickDrawBtn = document.getElementById('quick-draw-btn');
     
     // Save selected language to local storage
     languageSelect.addEventListener('change', (e) => {
@@ -15,6 +16,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedLanguage) {
         languageSelect.value = savedLanguage;
     }
+    
+    // Handle quick draw button click
+    quickDrawBtn.addEventListener('click', () => {
+        const username = usernameInput.value.trim();
+        
+        if (!username) {
+            alert('Please enter your name first');
+            usernameInput.focus();
+            return;
+        }
+        
+        // Save username to local storage
+        localStorage.setItem('pictionary-username', username);
+        
+        // Redirect to game.html
+        window.location.href = 'game.html';
+    });
     
     // Handle create room button click
     createRoomBtn.addEventListener('click', () => {

@@ -509,6 +509,23 @@ select {
     margin-bottom: 2rem;
 }
 
+.quick-draw-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.quick-draw-btn:hover {
+    background-color: #2d8f48;
+    transform: translateY(-2px);
+}
+
 .join-room-container {
     flex: 1;
     max-width: 200px;
