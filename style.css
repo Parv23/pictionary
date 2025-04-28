@@ -237,6 +237,119 @@ select {
     min-width: 200px;
 }
 
+.tools {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    align-items: center;
+}
+
+/* Eraser tools styling */
+.eraser-tool-container {
+    position: relative;
+}
+
+.eraser-options {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 120px;
+}
+
+.eraser-options:before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+    filter: drop-shadow(0 -1px 0 #ddd);
+}
+
+.eraser-options.show {
+    display: flex;
+}
+
+.eraser-sizes {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.eraser-size-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.eraser-size-btn.active {
+    background-color: #eee;
+    border-color: var(--primary-color);
+}
+
+.eraser-type-btn {
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.eraser-type-btn:hover {
+    background-color: #eee;
+}
+
+.tool-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tool-btn:hover {
+    background-color: #eee;
+}
+
+.tool-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
 .color-picker {
     display: flex;
     gap: 0.5rem;
@@ -261,33 +374,6 @@ select {
     margin-top: 0.5rem;
     width: 100%;
     justify-content: center;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 0.5rem;
-    width: 100%;
-    justify-content: center;
-}
-
-.tool-btn {
-    padding: 0.4rem 0.8rem;
-    border-radius: 0.5rem;
-    border: 1px solid #ddd;
-    background-color: #f8f8f8;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-}
-
-.tool-btn:hover {
-    background-color: #eee;
-}
-
-.tool-btn.active {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
 }
 
 .brush-size {

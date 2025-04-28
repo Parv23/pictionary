@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastY = 0;
     let currentColor = '#000000';
     let brushSize = 5;
+    let eraserSize = 12;
     let drawingMode = 'brush'; // 'brush', 'eraser', 'stroke-eraser'
     
     // Store drawn strokes for stroke eraser
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentStroke = {
                 mode: drawingMode,
                 color: currentColor,
-                size: brushSize,
+                size: drawingMode === 'eraser' ? eraserSize : brushSize,
                 points: [{x: lastX, y: lastY}]
             };
         }
@@ -87,12 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (drawingMode === 'eraser') {
             // For eraser, use white color
             ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = eraserSize;
         } else {
             // For brush, use selected color
             ctx.strokeStyle = currentColor;
+            ctx.lineWidth = brushSize;
         }
-        
-        ctx.lineWidth = brushSize;
         
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
@@ -120,8 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function checkStrokeErase(x, y) {
         // Find and remove strokes that are close to the click point
-        // This is a simple implementation - a more sophisticated one would check
-        // if the point is actually on the stroke path
         const tolerance = 10; // Distance in pixels to consider a hit
         let erasedStroke = false;
         
@@ -170,12 +169,89 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    // Tool buttons
+    const brushTool = document.getElementById('brush-tool');
+    const eraserTool = document.getElementById('eraser-tool');
+    const eraserOptions = document.getElementById('eraser-options');
+    const strokeEraser = document.getElementById('stroke-eraser');
+    
+    // Tool selection
+    brushTool.addEventListener('click', () => {
+        setDrawingMode('brush');
+        hideEraserOptions();
+    });
+    
+    eraserTool.addEventListener('click', () => {
+        toggleEraserOptions();
+    });
+    
+    strokeEraser.addEventListener('click', () => {
+        setDrawingMode('stroke-eraser');
+        hideEraserOptions();
+    });
+    
+    // Function to toggle eraser options visibility
+    function toggleEraserOptions() {
+        eraserOptions.classList.toggle('show');
+        if (eraserOptions.classList.contains('show')) {
+            setDrawingMode('eraser');
+        }
+    }
+    
+    // Hide eraser options
+    function hideEraserOptions() {
+        eraserOptions.classList.remove('show');
+    }
+    
+    // Close eraser options when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!eraserTool.contains(e.target) && 
+            !eraserOptions.contains(e.target) && 
+            eraserOptions.classList.contains('show')) {
+            hideEraserOptions();
+        }
+    });
+    
+    // Eraser size buttons
+    const eraserSizeBtns = document.querySelectorAll('.eraser-size-btn');
+    eraserSizeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all eraser size buttons
+            eraserSizeBtns.forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            btn.classList.add('active');
+            // Set eraser size
+            eraserSize = parseInt(btn.dataset.size);
+            setDrawingMode('eraser');
+        });
+    });
+    
+    function setDrawingMode(mode) {
+        drawingMode = mode;
+        
+        // Update tool buttons UI
+        const toolBtns = document.querySelectorAll('.tool-btn');
+        toolBtns.forEach(btn => btn.classList.remove('active'));
+        
+        if (mode === 'brush') {
+            brushTool.classList.add('active');
+            canvas.style.cursor = 'default';
+        } else if (mode === 'eraser') {
+            eraserTool.classList.add('active');
+            canvas.style.cursor = 'crosshair';
+        } else if (mode === 'stroke-eraser') {
+            eraserTool.classList.add('active');
+            canvas.style.cursor = 'pointer';
+        }
+    }
+    
     // Color picker
     const colorBtns = document.querySelectorAll('.color-btn');
     colorBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             // Set drawing mode back to brush when color is selected
             setDrawingMode('brush');
+            hideEraserOptions();
             
             // Remove active class from all buttons
             colorBtns.forEach(b => b.classList.remove('active'));
@@ -196,42 +272,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add('active');
             // Set brush size
             brushSize = parseInt(btn.dataset.size);
+            // Switch to brush mode
+            setDrawingMode('brush');
+            hideEraserOptions();
         });
     });
-    
-    // Eraser tools
-    const manualEraser = document.getElementById('manual-eraser');
-    const strokeEraser = document.getElementById('stroke-eraser');
-    const toolBtns = document.querySelectorAll('.tool-btn');
-    
-    manualEraser.addEventListener('click', () => {
-        setDrawingMode('eraser');
-    });
-    
-    strokeEraser.addEventListener('click', () => {
-        setDrawingMode('stroke-eraser');
-    });
-    
-    function setDrawingMode(mode) {
-        drawingMode = mode;
-        
-        // Update UI - remove active class from all tool buttons
-        toolBtns.forEach(btn => btn.classList.remove('active'));
-        
-        // Add active class to the appropriate button
-        if (mode === 'eraser') {
-            manualEraser.classList.add('active');
-        } else if (mode === 'stroke-eraser') {
-            strokeEraser.classList.add('active');
-        }
-        
-        // Also update cursor style
-        if (mode === 'eraser' || mode === 'stroke-eraser') {
-            canvas.style.cursor = 'crosshair';
-        } else {
-            canvas.style.cursor = 'default';
-        }
-    }
     
     // Clear button
     const clearBtn = document.getElementById('clear-btn');
