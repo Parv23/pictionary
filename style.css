@@ -75,6 +75,9 @@ main {
 
 .input-group {
     margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .input-group label {
@@ -519,6 +522,8 @@ select {
     cursor: pointer;
     margin-top: 0.5rem;
     transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    display: block;
 }
 
 .quick-draw-btn:hover {
