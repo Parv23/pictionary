@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pictionary Game</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="container">
@@ -33,6 +34,8 @@
                         <button id="join-btn" class="join-button">Join</button>
                     </div>
                 </div>
+                
+                <div id="error-message" class="error-message"></div>
             </div>
         </main>
 
@@ -49,6 +52,7 @@
         </footer>
     </div>
 
+    <script src="supabase-config.js"></script>
     <script src="words.js"></script>
     <script src="app.js"></script>
 </body>
