@@ -52,6 +52,17 @@
         </footer>
     </div>
 
+    <!-- Fix Supabase client initialization -->
+    <script>
+    // Make createClient globally available from the Supabase CDN
+    if (typeof window.supabase !== 'undefined') {
+        window.createClient = window.supabase.createClient;
+        console.log('Made createClient globally available');
+    } else {
+        console.error('Supabase library not loaded properly!');
+    }
+    </script>
+
     <script src="supabase-config.js"></script>
     <script src="words.js"></script>
     <script src="app.js"></script>
