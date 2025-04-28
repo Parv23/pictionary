@@ -18,13 +18,20 @@
                 <h2>Welcome to Pictionary!</h2>
                 <p>Challenge your drawing skills and have fun with friends.</p>
                 
-                <form id="username-form">
+                <div class="username-section">
                     <div class="input-group">
                         <label for="username">Enter your name:</label>
                         <input type="text" id="username" required placeholder="Your name">
                     </div>
-                    <button type="submit" class="start-button">Let's Draw!</button>
-                </form>
+                </div>
+
+                <div class="room-buttons">
+                    <button id="create-room-btn" class="room-btn">Create a room</button>
+                    <div class="code-input-container">
+                        <input type="text" id="room-code" placeholder="Enter code" class="join-input">
+                        <button id="join-btn" class="join-button">Join</button>
+                    </div>
+                </div>
             </div>
         </main>
 
