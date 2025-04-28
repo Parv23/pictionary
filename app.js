@@ -7,6 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const quickDrawBtn = document.getElementById('quick-draw-btn');
     const errorMessage = document.getElementById('error-message');
     
+    console.log('DEBUG: app.js loaded');
+    console.log('DEBUG: DOM elements found:', {
+        usernameInput: !!usernameInput,
+        createRoomBtn: !!createRoomBtn,
+        roomCodeInput: !!roomCodeInput,
+        joinBtn: !!joinBtn,
+        errorMessage: !!errorMessage
+    });
+    
     // Save selected language to local storage
     languageSelect.addEventListener('change', (e) => {
         localStorage.setItem('pictionary-language', e.target.value);
@@ -40,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Handle create room button click
     createRoomBtn.addEventListener('click', async () => {
+        console.log('DEBUG: Create room button clicked');
         const username = usernameInput.value.trim();
         
         if (!username) {
@@ -52,9 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         
         try {
+            console.log('DEBUG: Generating room code');
             // Generate a random room code (6 characters)
             const roomCode = generateRoomCode();
+            console.log('DEBUG: Room code generated:', roomCode);
             
+            console.log('DEBUG: Creating room in Supabase');
             // Create room document in Supabase
             await roomsCollection.doc(roomCode).set({
                 createdAt: new Date().toISOString(),
@@ -63,16 +76,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 active: true
             });
             
+            console.log('DEBUG: Adding host as first player');
             // Add host as first player
             await addPlayerToRoom(roomCode, username, true);
             
+            console.log('DEBUG: Saving session data');
             // Save data to local storage
             saveSessionData(username, roomCode, true);
             
+            console.log('DEBUG: Redirecting to room.html');
             // Redirect to room.html
             window.location.href = 'room.html';
         } catch (error) {
-            console.error('Error creating room:', error);
+            console.error('DEBUG: Error creating room:', error);
             showError('Failed to create room. Please try again.');
         }
     });
@@ -91,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Function to join a room
     async function joinRoom() {
+        console.log('DEBUG: Joining room');
         const username = usernameInput.value.trim();
         const roomCode = roomCodeInput.value.trim().toUpperCase();
         
@@ -110,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         
         try {
+            console.log('DEBUG: Checking if room exists:', roomCode);
             // Check if room exists
             const roomRef = roomsCollection.doc(roomCode);
             const roomDoc = await roomRef.get();
@@ -127,16 +145,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
+            console.log('DEBUG: Adding player to room');
             // Add player to room
             await addPlayerToRoom(roomCode, username, false);
             
+            console.log('DEBUG: Saving session data');
             // Save data to local storage
             saveSessionData(username, roomCode, false);
             
+            console.log('DEBUG: Redirecting to room.html');
             // Redirect to room.html
             window.location.href = 'room.html';
         } catch (error) {
-            console.error('Error joining room:', error);
+            console.error('DEBUG: Error joining room:', error);
             showError('Failed to join room. Please try again.');
         }
     }
@@ -153,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         try {
+            console.log('DEBUG: Getting current room data for adding player');
             // Get current room data with a fresh fetch
             const roomDoc = await roomsCollection.doc(roomCode).get();
             
@@ -168,19 +190,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // Append new player to the array
             const updatedPlayers = [...currentPlayers, playerData];
             
+            console.log('DEBUG: Updating room with new player');
             // Update the room with the new players array
             const updateResult = await roomsCollection.doc(roomCode).update({
                 players: updatedPlayers
             });
             
-            console.log('Player added to room:', playerId);
+            console.log('DEBUG: Player added to room:', playerId);
             
             // Save player ID to local storage
             localStorage.setItem('pictionary-player-id', playerId);
             
             return updateResult;
         } catch (error) {
-            console.error('Error adding player to room:', error);
+            console.error('DEBUG: Error adding player to room:', error);
             throw error;
         }
     }
@@ -204,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Helper function to show error message
     function showError(message) {
+        console.log('DEBUG: Showing error:', message);
         errorMessage.textContent = message;
         errorMessage.style.display = 'block';
     }
